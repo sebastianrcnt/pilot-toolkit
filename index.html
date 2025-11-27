@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <title>Pilot Toolkit</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
 
         <!-- PWA basics -->
         <link rel="manifest" href="manifest.webmanifest" />
@@ -18,620 +18,466 @@
         <meta name="apple-mobile-web-app-title" content="Pilot Toolkit" />
         <link rel="apple-touch-icon" href="icons/icon-192.png" />
 
-        <link rel="stylesheet" href="styles.css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                padding-bottom: 80px;
+                -webkit-user-select: none;
+                user-select: none;
+                -webkit-touch-callout: none;
+                position: relative;
+            }
+            input, textarea, select {
+                -webkit-user-select: text;
+                user-select: text;
+            }
+            .section {
+                display: none;
+            }
+            .section.active {
+                display: block;
+                animation: fadeIn 0.3s ease-in;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            .result-box {
+                @apply text-center py-3 px-2 bg-blue-50 dark:bg-blue-950 rounded-lg;
+            }
+            .result-label {
+                @apply text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide;
+            }
+            .result-value {
+                @apply text-lg font-semibold text-gray-900 dark:text-gray-50 mt-1;
+            }
+            .section-padding {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+        </style>
     </head>
-    <body>
-        <div id="app">
-            <header class="app-header">
-                <div class="title-group">
-                    <h1 data-i18n="appTitle">Pilot Toolkit</h1>
-                    <p class="subtitle" data-i18n="appSubtitle">
-                        Quick rules of thumb and conversions for pilots
-                    </p>
-                </div>
-
-                <div class="top-controls">
-                    <button
-                        id="theme-toggle"
-                        class="chip"
-                        aria-label="Toggle theme"
-                    >
-                        🌙
-                    </button>
-
-                    <div
-                        class="chip chip-toggle"
-                        id="lang-toggle"
-                        aria-label="Toggle language"
-                    >
-                        <span data-lang="en" class="lang-option active"
-                            >EN</span
-                        >
-                        <span data-lang="ko" class="lang-option">KR</span>
+    <body class="bg-white dark:bg-slate-950 text-gray-900 dark:text-gray-50">
+        <div id="app" class="max-w-2xl mx-auto">
+            <!-- Header -->
+            <header class="sticky top-0 z-20 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-4">
+                <div class="flex items-center justify-between gap-4">
+                    <div class="flex-1 min-w-0">
+                        <h1 class="text-2xl font-bold" data-i18n="appTitle">Pilot Toolkit</h1>
+                        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400" data-i18n="appSubtitle">
+                            Quick rules of thumb and conversions for pilots
+                        </p>
                     </div>
-
-                    <button
-                        id="install-btn"
-                        class="chip hidden"
-                        data-i18n="installButton"
-                    >
-                        Install
-                    </button>
+                    <div class="flex gap-2 flex-shrink-0">
+                        <button
+                            id="theme-toggle"
+                            class="rounded-full p-2 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+                            aria-label="Toggle theme"
+                        >
+                            🌙
+                        </button>
+                        <div
+                            class="flex bg-gray-100 dark:bg-slate-800 rounded-full p-1"
+                            id="lang-toggle"
+                            aria-label="Toggle language"
+                        >
+                            <span data-lang="en" class="lang-option active px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium cursor-pointer">EN</span>
+                            <span data-lang="ko" class="lang-option px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium cursor-pointer">KR</span>
+                        </div>
+                        <button
+                            id="install-btn"
+                            class="hidden px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full text-xs sm:text-sm font-medium transition-colors"
+                            data-i18n="installButton"
+                        >
+                            Install
+                        </button>
+                    </div>
                 </div>
             </header>
 
-            <main class="content">
+            <!-- Main content with sections -->
+            <main>
                 <!-- Converters section -->
-                <section>
-                    <h2 class="section-title" data-i18n="sectionConverters">
-                        Converters
-                    </h2>
-
+                <section id="section-converters" class="section active section-padding space-y-3">
                     <!-- Pressure -->
-                    <div class="card">
-                        <h3 data-i18n="pressureTitle">Pressure</h3>
-                        <div class="field-row">
-                            <label>
-                                <span>hPa</span>
-                                <input
-                                    type="number"
-                                    id="press-hpa"
-                                    inputmode="decimal"
-                                />
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 space-y-3">
+                        <h3 class="font-semibold" data-i18n="pressureTitle">Pressure</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">hPa</span>
+                                <input type="number" id="press-hpa" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span>inHg</span>
-                                <input
-                                    type="number"
-                                    id="press-inhg"
-                                    inputmode="decimal"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">inHg</span>
+                                <input type="number" id="press-inhg" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
                         </div>
                     </div>
 
                     <!-- Altitude -->
-                    <div class="card">
-                        <h3 data-i18n="altTitle">Altitude</h3>
-                        <div class="field-row">
-                            <label>
-                                <span data-i18n="feetLabel">Feet</span>
-                                <input
-                                    type="number"
-                                    id="alt-ft"
-                                    inputmode="decimal"
-                                />
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 space-y-3">
+                        <h3 class="font-semibold" data-i18n="altTitle">Altitude</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="feetLabel">Feet</span>
+                                <input type="number" id="alt-ft" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span data-i18n="metersLabel">Meters</span>
-                                <input
-                                    type="number"
-                                    id="alt-m"
-                                    inputmode="decimal"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="metersLabel">Meters</span>
+                                <input type="number" id="alt-m" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
                         </div>
                     </div>
 
                     <!-- Distance -->
-                    <div class="card">
-                        <h3 data-i18n="distTitle">Distance</h3>
-                        <div class="field-row">
-                            <label>
-                                <span>NM</span>
-                                <input
-                                    type="number"
-                                    id="dist-nm"
-                                    inputmode="decimal"
-                                />
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 space-y-3">
+                        <h3 class="font-semibold" data-i18n="distTitle">Distance</h3>
+                        <div class="grid grid-cols-3 gap-2">
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">NM</span>
+                                <input type="number" id="dist-nm" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span>km</span>
-                                <input
-                                    type="number"
-                                    id="dist-km"
-                                    inputmode="decimal"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">km</span>
+                                <input type="number" id="dist-km" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span data-i18n="statuteMiles">SM</span>
-                                <input
-                                    type="number"
-                                    id="dist-sm"
-                                    inputmode="decimal"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="statuteMiles">SM</span>
+                                <input type="number" id="dist-sm" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
                         </div>
                     </div>
 
                     <!-- Fuel and weight -->
-                    <div class="card">
-                        <h3 data-i18n="fuelTitle">Fuel and weight</h3>
-                        <p class="hint" data-i18n="fuelHint">
-                            Uses approx avgas density 6 lb/gal (0.72 kg/L) for
-                            volume to weight.
-                        </p>
-                        <div class="field-row">
-                            <label>
-                                <span data-i18n="gallonsLabel">Gallons</span>
-                                <input
-                                    type="number"
-                                    id="fuel-gal"
-                                    inputmode="decimal"
-                                />
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 space-y-3">
+                        <h3 class="font-semibold" data-i18n="fuelTitle">Fuel and weight</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="fuelHint">Uses approx avgas density 6 lb/gal (0.72 kg/L) for volume to weight.</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="gallonsLabel">Gallons</span>
+                                <input type="number" id="fuel-gal" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span>Liters</span>
-                                <input
-                                    type="number"
-                                    id="fuel-l"
-                                    inputmode="decimal"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">Liters</span>
+                                <input type="number" id="fuel-l" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
                         </div>
-                        <div class="field-row">
-                            <label>
-                                <span>Pounds</span>
-                                <input
-                                    type="number"
-                                    id="fuel-lb"
-                                    inputmode="decimal"
-                                />
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">Pounds</span>
+                                <input type="number" id="fuel-lb" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span>Kilograms</span>
-                                <input
-                                    type="number"
-                                    id="fuel-kg"
-                                    inputmode="decimal"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">Kilograms</span>
+                                <input type="number" id="fuel-kg" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
                         </div>
                     </div>
 
                     <!-- Temperature -->
-                    <div class="card">
-                        <h3 data-i18n="tempTitle">Temperature</h3>
-                        <div class="field-row">
-                            <label>
-                                <span>°C</span>
-                                <input
-                                    type="number"
-                                    id="temp-c"
-                                    inputmode="decimal"
-                                />
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 space-y-3">
+                        <h3 class="font-semibold" data-i18n="tempTitle">Temperature</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">°C</span>
+                                <input type="number" id="temp-c" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span>°F</span>
-                                <input
-                                    type="number"
-                                    id="temp-f"
-                                    inputmode="decimal"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">°F</span>
+                                <input type="number" id="temp-f" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
                         </div>
                     </div>
 
                     <!-- Speed -->
-                    <div class="card">
-                        <h3 data-i18n="speedTitle">Speed</h3>
-                        <div class="field-row">
-                            <label>
-                                <span>kt</span>
-                                <input
-                                    type="number"
-                                    id="speed-kt"
-                                    inputmode="decimal"
-                                />
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 space-y-3">
+                        <h3 class="font-semibold" data-i18n="speedTitle">Speed</h3>
+                        <div class="grid grid-cols-3 gap-2">
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">kt</span>
+                                <input type="number" id="speed-kt" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span>km/h</span>
-                                <input
-                                    type="number"
-                                    id="speed-kmh"
-                                    inputmode="decimal"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">km/h</span>
+                                <input type="number" id="speed-kmh" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span>mph</span>
-                                <input
-                                    type="number"
-                                    id="speed-mph"
-                                    inputmode="decimal"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">mph</span>
+                                <input type="number" id="speed-mph" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
                         </div>
                     </div>
 
                     <!-- Time -->
-                    <div class="card">
-                        <h3 data-i18n="timeTitle">Time</h3>
-                        <div class="field-row">
-                            <label>
-                                <span data-i18n="timeHm">HH:MM</span>
-                                <input
-                                    type="text"
-                                    id="time-hm"
-                                    placeholder="01:30"
-                                />
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 space-y-3">
+                        <h3 class="font-semibold" data-i18n="timeTitle">Time</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="timeHm">HH:MM</span>
+                                <input type="text" id="time-hm" placeholder="01:30" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span data-i18n="timeDec">Decimal hours</span>
-                                <input
-                                    type="number"
-                                    id="time-dec"
-                                    step="0.01"
-                                    inputmode="decimal"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="timeDec">Decimal hours</span>
+                                <input type="number" id="time-dec" step="0.01" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
                         </div>
                     </div>
                 </section>
 
-                <!-- Descent planning -->
-                <section>
-                    <h2 class="section-title" data-i18n="sectionDescent">
-                        Descent
-                    </h2>
-
-                    <div class="card">
-                        <h3 data-i18n="descentTitle">Descent planning</h3>
-                        <p class="hint" data-i18n="descentHint">
-                            Rule of thumb: VS ≈ GS × 5 for about a 3° path, ToD
-                            ≈ altitude to lose / 300 (ft to NM).
-                        </p>
-                        <div class="field-row">
-                            <label>
-                                <span data-i18n="cruiseAlt"
-                                    >Cruise altitude (ft)</span
-                                >
-                                <input
-                                    type="number"
-                                    id="descent-cruise"
-                                    inputmode="decimal"
-                                />
+                <!-- Descent section -->
+                <section id="section-descent" class="section section-padding space-y-3">
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 space-y-3">
+                        <h3 class="font-semibold" data-i18n="descentTitle">Descent planning</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="descentHint">Rule of thumb: VS ≈ GS × 5 for about a 3° path, ToD ≈ altitude to lose / 300 (ft to NM).</p>
+                        <div class="space-y-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="cruiseAlt">Cruise altitude (ft)</span>
+                                <input type="number" id="descent-cruise" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span data-i18n="targetAlt"
-                                    >Target altitude (ft)</span
-                                >
-                                <input
-                                    type="number"
-                                    id="descent-target"
-                                    inputmode="decimal"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="targetAlt">Target altitude (ft)</span>
+                                <input type="number" id="descent-target" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            </label>
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="gsLabel">Groundspeed (kt)</span>
+                                <input type="number" id="descent-gs" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
                         </div>
-                        <div class="field-row">
-                            <label>
-                                <span data-i18n="gsLabel"
-                                    >Groundspeed (kt)</span
-                                >
-                                <input
-                                    type="number"
-                                    id="descent-gs"
-                                    inputmode="decimal"
-                                />
-                            </label>
-                        </div>
-
-                        <div class="results">
-                            <div>
-                                <div class="result-label" data-i18n="altToLose">
-                                    Altitude to lose
-                                </div>
-                                <div class="result-value">
-                                    <span id="descent-altlose">–</span> ft
-                                </div>
+                        <div class="grid grid-cols-2 gap-2 pt-2">
+                            <div class="result-box">
+                                <div class="result-label" data-i18n="altToLose">Altitude to lose</div>
+                                <div class="result-value"><span id="descent-altlose">–</span> ft</div>
                             </div>
-                            <div>
-                                <div
-                                    class="result-label"
-                                    data-i18n="todDistance"
-                                >
-                                    ToD distance
-                                </div>
-                                <div class="result-value">
-                                    <span id="descent-tod">–</span> NM
-                                </div>
+                            <div class="result-box">
+                                <div class="result-label" data-i18n="todDistance">ToD distance</div>
+                                <div class="result-value"><span id="descent-tod">–</span> NM</div>
                             </div>
-                            <div>
-                                <div class="result-label" data-i18n="reqVs">
-                                    Required VS
-                                </div>
-                                <div class="result-value">
-                                    <span id="descent-vs">–</span> fpm
-                                </div>
+                            <div class="result-box">
+                                <div class="result-label" data-i18n="reqVs">Required VS</div>
+                                <div class="result-value"><span id="descent-vs">–</span> fpm</div>
                             </div>
-                            <div>
-                                <div
-                                    class="result-label"
-                                    data-i18n="descentTime"
-                                >
-                                    Descent time
-                                </div>
-                                <div class="result-value">
-                                    <span id="descent-time">–</span> min
-                                </div>
+                            <div class="result-box">
+                                <div class="result-label" data-i18n="descentTime">Descent time</div>
+                                <div class="result-value"><span id="descent-time">–</span> min</div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Turns -->
-                <section>
-                    <h2 class="section-title" data-i18n="sectionTurns">
-                        Turns
-                    </h2>
-
-                    <div class="card">
-                        <h3 data-i18n="turnTitle">Standard rate turn</h3>
-                        <p class="hint" data-i18n="turnHint">
-                            Bank for standard rate: bank ≈ TAS / 10 + 5 degrees.
-                        </p>
-                        <div class="field-row">
-                            <label>
-                                <span data-i18n="tasLabel">TAS (kt)</span>
-                                <input
-                                    type="number"
-                                    id="turn-tas"
-                                    inputmode="decimal"
-                                />
+                <!-- Turns section -->
+                <section id="section-turns" class="section section-padding space-y-3">
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 space-y-3">
+                        <h3 class="font-semibold" data-i18n="turnTitle">Standard rate turn</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="turnHint">Bank for standard rate: bank ≈ TAS / 10 + 5 degrees.</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="tasLabel">TAS (kt)</span>
+                                <input type="number" id="turn-tas" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span data-i18n="turnAngleLabel"
-                                    >Turn angle (deg)</span
-                                >
-                                <input
-                                    type="number"
-                                    id="turn-angle"
-                                    inputmode="decimal"
-                                    value="180"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="turnAngleLabel">Turn angle (deg)</span>
+                                <input type="number" id="turn-angle" value="180" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
                         </div>
-
-                        <div class="results">
-                            <div>
-                                <div
-                                    class="result-label"
-                                    data-i18n="stdBankAngle"
-                                >
-                                    Standard rate bank
-                                </div>
-                                <div class="result-value">
-                                    <span id="turn-bank">–</span> °
-                                </div>
+                        <div class="grid grid-cols-2 gap-2 pt-2">
+                            <div class="result-box">
+                                <div class="result-label" data-i18n="stdBankAngle">Standard rate bank</div>
+                                <div class="result-value"><span id="turn-bank">–</span> °</div>
                             </div>
-                            <div>
-                                <div class="result-label" data-i18n="turnTime">
-                                    Time to turn
-                                </div>
-                                <div class="result-value">
-                                    <span id="turn-time">–</span> s
-                                </div>
+                            <div class="result-box">
+                                <div class="result-label" data-i18n="turnTime">Time to turn</div>
+                                <div class="result-value"><span id="turn-time">–</span> s</div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Winds -->
-                <section>
-                    <h2 class="section-title" data-i18n="sectionWinds">
-                        Winds
-                    </h2>
-
-                    <div class="card">
-                        <h3 data-i18n="windCompTitle">
-                            Headwind and crosswind
-                        </h3>
-                        <div class="field-row">
-                            <label>
-                                <span data-i18n="runwayHeading"
-                                    >Runway heading (deg)</span
-                                >
-                                <input
-                                    type="number"
-                                    id="wind-rwy"
-                                    inputmode="decimal"
-                                />
+                <!-- Winds section -->
+                <section id="section-winds" class="section section-padding space-y-3">
+                    <!-- Headwind/Crosswind -->
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 space-y-3">
+                        <h3 class="font-semibold" data-i18n="windCompTitle">Headwind and crosswind</h3>
+                        <div class="space-y-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="runwayHeading">Runway heading (deg)</span>
+                                <input type="number" id="wind-rwy" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span data-i18n="windDir"
-                                    >Wind direction (deg)</span
-                                >
-                                <input
-                                    type="number"
-                                    id="wind-dir"
-                                    inputmode="decimal"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="windDir">Wind direction (deg)</span>
+                                <input type="number" id="wind-dir" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            </label>
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="windSpeed">Wind speed (kt)</span>
+                                <input type="number" id="wind-speed" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
                         </div>
-                        <div class="field-row">
-                            <label>
-                                <span data-i18n="windSpeed"
-                                    >Wind speed (kt)</span
-                                >
-                                <input
-                                    type="number"
-                                    id="wind-speed"
-                                    inputmode="decimal"
-                                />
-                            </label>
-                        </div>
-
-                        <div class="results">
-                            <div>
-                                <div
-                                    class="result-label"
-                                    data-i18n="headwindComp"
-                                >
-                                    Headwind component
-                                </div>
-                                <div class="result-value">
-                                    <span id="wind-head">–</span> kt
-                                </div>
+                        <div class="grid grid-cols-2 gap-2 pt-2">
+                            <div class="result-box">
+                                <div class="result-label" data-i18n="headwindComp">Headwind component</div>
+                                <div class="result-value"><span id="wind-head">–</span> kt</div>
                             </div>
-                            <div>
-                                <div
-                                    class="result-label"
-                                    data-i18n="crosswindComp"
-                                >
-                                    Crosswind component
-                                </div>
-                                <div class="result-value">
-                                    <span id="wind-cross">–</span> kt (<span
-                                        id="wind-cross-dir"
-                                        >–</span
-                                    >)
-                                </div>
+                            <div class="result-box">
+                                <div class="result-label" data-i18n="crosswindComp">Crosswind component</div>
+                                <div class="result-value"><span id="wind-cross">–</span> kt<br><span class="text-sm">(<span id="wind-cross-dir">–</span>)</span></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <h3 data-i18n="gsEstimateTitle">
-                            Groundspeed estimate
-                        </h3>
-                        <p class="hint" data-i18n="gsEstimateHint">
-                            GS ≈ TAS + headwind (negative for tailwind).
-                        </p>
-                        <div class="field-row">
-                            <label>
-                                <span>TAS (kt)</span>
-                                <input
-                                    type="number"
-                                    id="gs-tas"
-                                    inputmode="decimal"
-                                />
+                    <!-- Groundspeed -->
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 space-y-3">
+                        <h3 class="font-semibold" data-i18n="gsEstimateTitle">Groundspeed estimate</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="gsEstimateHint">GS ≈ TAS + headwind (negative for tailwind).</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">TAS (kt)</span>
+                                <input type="number" id="gs-tas" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
-                            <label>
-                                <span data-i18n="headTail"
-                                    >Headwind (+) / tailwind (−)</span
-                                >
-                                <input
-                                    type="number"
-                                    id="gs-head"
-                                    inputmode="decimal"
-                                />
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="headTail">Headwind (+) / tailwind (−)</span>
+                                <input type="number" id="gs-head" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </label>
                         </div>
+                        <div class="result-box w-full">
+                            <div class="result-label" data-i18n="gsLabel2">Estimated groundspeed</div>
+                            <div class="result-value"><span id="gs-result">–</span> kt</div>
+                        </div>
+                    </div>
+                </section>
 
-                        <div class="results">
-                            <div>
-                                <div class="result-label" data-i18n="gsLabel2">
-                                    Estimated groundspeed
-                                </div>
-                                <div class="result-value">
-                                    <span id="gs-result">–</span> kt
-                                </div>
+                <!-- Density Altitude section -->
+                <section id="section-density" class="section section-padding space-y-3">
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 space-y-3">
+                        <h3 class="font-semibold" data-i18n="daTitle">Density altitude</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="daHint">Approximation: DA ≈ PA + 120 × (OAT − ISA temp). Pressure altitude from field elevation and altimeter.</p>
+                        <div class="space-y-3">
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="fieldElev">Field elevation (ft)</span>
+                                <input type="number" id="da-elev" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            </label>
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="altSetting">Altimeter (inHg)</span>
+                                <input type="number" id="da-altset" placeholder="29.92" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            </label>
+                            <label class="flex flex-col">
+                                <span class="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1" data-i18n="oatLabel">Outside air temp (°C)</span>
+                                <input type="number" id="da-oat" inputmode="decimal" class="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            </label>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 pt-2">
+                            <div class="result-box">
+                                <div class="result-label" data-i18n="paLabel">Pressure altitude</div>
+                                <div class="result-value"><span id="da-pa">–</span> ft</div>
+                            </div>
+                            <div class="result-box">
+                                <div class="result-label" data-i18n="isaTempLabel">ISA temp at field</div>
+                                <div class="result-value"><span id="da-isa">–</span> °C</div>
+                            </div>
+                            <div class="result-box">
+                                <div class="result-label" data-i18n="daLabel">Density altitude</div>
+                                <div class="result-value"><span id="da-result">–</span> ft</div>
+                            </div>
+                            <div class="result-box">
+                                <div class="result-label" data-i18n="perfImpact">Takeoff distance increase</div>
+                                <div class="result-value"><span id="da-impact">–</span></div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Density altitude -->
-                <section>
-                    <h2 class="section-title" data-i18n="sectionDensity">
-                        Density altitude
-                    </h2>
-
-                    <div class="card">
-                        <h3 data-i18n="daTitle">Density altitude</h3>
-                        <p class="hint" data-i18n="daHint">
-                            Approximation: DA ≈ PA + 120 × (OAT − ISA temp).
-                            Pressure altitude from field elevation and
-                            altimeter.
-                        </p>
-
-                        <div class="field-row">
-                            <label>
-                                <span data-i18n="fieldElev"
-                                    >Field elevation (ft)</span
-                                >
-                                <input
-                                    type="number"
-                                    id="da-elev"
-                                    inputmode="decimal"
-                                />
-                            </label>
-                            <label>
-                                <span data-i18n="altSetting"
-                                    >Altimeter (inHg)</span
-                                >
-                                <input
-                                    type="number"
-                                    id="da-altset"
-                                    inputmode="decimal"
-                                    placeholder="29.92"
-                                />
-                            </label>
-                        </div>
-                        <div class="field-row">
-                            <label>
-                                <span data-i18n="oatLabel"
-                                    >Outside air temp (°C)</span
-                                >
-                                <input
-                                    type="number"
-                                    id="da-oat"
-                                    inputmode="decimal"
-                                />
-                            </label>
-                        </div>
-
-                        <div class="results">
-                            <div>
-                                <div class="result-label" data-i18n="paLabel">
-                                    Pressure altitude
-                                </div>
-                                <div class="result-value">
-                                    <span id="da-pa">–</span> ft
-                                </div>
-                            </div>
-                            <div>
-                                <div
-                                    class="result-label"
-                                    data-i18n="isaTempLabel"
-                                >
-                                    ISA temp at field
-                                </div>
-                                <div class="result-value">
-                                    <span id="da-isa">–</span> °C
-                                </div>
-                            </div>
-                            <div>
-                                <div class="result-label" data-i18n="daLabel">
-                                    Density altitude
-                                </div>
-                                <div class="result-value">
-                                    <span id="da-result">–</span> ft
-                                </div>
-                            </div>
-                            <div>
-                                <div
-                                    class="result-label"
-                                    data-i18n="perfImpact"
-                                >
-                                    Estimated takeoff distance increase
-                                </div>
-                                <div class="result-value">
-                                    <span id="da-impact">–</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <footer class="app-footer">
-                    <p data-i18n="footerNote">
-                        For training and quick planning only. Always cross check
-                        with certified performance data and avionics.
-                    </p>
+                <!-- Footer -->
+                <footer class="text-center px-4 py-4 text-xs text-gray-600 dark:text-gray-400 section-padding">
+                    <p data-i18n="footerNote">For training and quick planning only. Always cross check with certified performance data and avionics.</p>
                 </footer>
             </main>
         </div>
 
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 flex justify-around safe-area-inset-bottom">
+            <button class="nav-btn active" data-section="converters">
+                <span class="text-lg">🔄</span>
+                <span class="text-xs" data-i18n="sectionConverters">Converters</span>
+            </button>
+            <button class="nav-btn" data-section="descent">
+                <span class="text-lg">📉</span>
+                <span class="text-xs" data-i18n="sectionDescent">Descent</span>
+            </button>
+            <button class="nav-btn" data-section="turns">
+                <span class="text-lg">🔁</span>
+                <span class="text-xs" data-i18n="sectionTurns">Turns</span>
+            </button>
+            <button class="nav-btn" data-section="winds">
+                <span class="text-lg">💨</span>
+                <span class="text-xs" data-i18n="sectionWinds">Winds</span>
+            </button>
+            <button class="nav-btn" data-section="density">
+                <span class="text-lg">🔥</span>
+                <span class="text-xs" data-i18n="sectionDensity">Density</span>
+            </button>
+        </nav>
+
         <script src="app.js"></script>
+        <script>
+            // Navigation switching
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const section = btn.dataset.section;
+
+                    // Hide all sections
+                    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+
+                    // Show selected section
+                    document.getElementById('section-' + section).classList.add('active');
+
+                    // Update active button
+                    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+
+            // Style for nav buttons
+            const style = document.createElement('style');
+            style.textContent = `
+                .nav-btn {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 4px;
+                    padding: 12px 8px;
+                    text-align: center;
+                    transition: all 0.2s;
+                    color: #6b7280;
+                    border: none;
+                    background: none;
+                    cursor: pointer;
+                }
+                .dark .nav-btn {
+                    color: #9ca3af;
+                }
+                .nav-btn.active {
+                    color: #3b82f6;
+                }
+                .dark .nav-btn.active {
+                    color: #60a5fa;
+                }
+                .nav-btn:active {
+                    background-color: #f3f4f6;
+                }
+                .dark .nav-btn:active {
+                    background-color: #1e293b;
+                }
+                @supports (padding: max(0px)) {
+                    nav {
+                        padding-bottom: max(16px, env(safe-area-inset-bottom));
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        </script>
     </body>
 </html>
