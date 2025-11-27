@@ -1,0 +1,246 @@
+:root {
+    color-scheme: dark light;
+
+    --bg: #050509;
+    --bg-elevated: #111119;
+    --bg-soft: #181824;
+    --text: #f7f7ff;
+    --text-soft: #b3b3c6;
+    --accent: #4f8dff;
+    --accent-soft: rgba(79, 141, 255, 0.18);
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --card-radius: 20px;
+    --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"] {
+    --bg: #f4f4f8;
+    --bg-elevated: #ffffff;
+    --bg-soft: #f1f2f7;
+    --text: #12121a;
+    --text-soft: #6a6a80;
+    --accent: #2965ff;
+    --accent-soft: rgba(41, 101, 255, 0.12);
+    --border-subtle: rgba(0, 0, 0, 0.06);
+    --shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Text",
+        "Roboto",
+        "Noto Sans",
+        sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+body {
+    min-height: 100vh;
+}
+
+#app {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 16px 16px 32px;
+}
+
+.app-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 4px 8px;
+}
+
+.title-group h1 {
+    font-size: 1.7rem;
+    margin: 0;
+    letter-spacing: 0.02em;
+}
+
+.subtitle {
+    margin: 6px 0 0;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+}
+
+.top-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chip {
+    border: none;
+    border-radius: 999px;
+    padding: 6px 10px;
+    background: var(--bg-soft);
+    color: var(--text-soft);
+    font-size: 0.83rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    box-shadow: 0 0 0 1px var(--border-subtle);
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        transform 0.06s ease;
+}
+
+.chip:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+.chip:active {
+    transform: scale(0.96);
+}
+
+.chip-toggle {
+    padding: 4px;
+}
+
+.lang-option {
+    padding: 4px 8px;
+    border-radius: 999px;
+    opacity: 0.5;
+}
+
+.lang-option.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+    opacity: 1;
+}
+
+.content {
+    padding: 4px 0 32px;
+}
+
+.section-title {
+    margin: 18px 4px 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-soft);
+}
+
+.card {
+    background: var(--bg-elevated);
+    border-radius: var(--card-radius);
+    padding: 14px 14px 12px;
+    margin: 8px 0 12px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--border-subtle);
+}
+
+.card h3 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+}
+
+.hint {
+    margin: 0 0 8px;
+    font-size: 0.78rem;
+    color: var(--text-soft);
+}
+
+.field-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+label {
+    flex: 1;
+    min-width: 130px;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+    color: var(--text-soft);
+}
+
+label span {
+    margin-bottom: 3px;
+}
+
+input {
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-soft);
+    color: var(--text);
+    padding: 8px 10px;
+    font-size: 0.92rem;
+    outline: none;
+    transition:
+        border 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
+
+input::placeholder {
+    color: rgba(180, 180, 200, 0.5);
+}
+
+input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent-soft);
+}
+
+.results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px 16px;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.result-label {
+    font-size: 0.74rem;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.result-value {
+    font-size: 0.98rem;
+    margin-top: 2px;
+}
+
+.app-footer {
+    margin-top: 24px;
+    padding: 6px 4px 0;
+    font-size: 0.75rem;
+    color: var(--text-soft);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Wider screens */
+
+@media (min-width: 900px) {
+    #app {
+        padding-top: 24px;
+    }
+    .app-header {
+        padding-top: 0;
+    }
+}

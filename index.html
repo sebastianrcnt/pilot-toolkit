@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <title>Pilot Toolkit</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <!-- PWA basics -->
+        <link rel="manifest" href="manifest.webmanifest" />
+        <meta name="theme-color" content="#000000" />
+
+        <!-- iOS PWA hints -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="black-translucent"
+        />
+        <meta name="apple-mobile-web-app-title" content="Pilot Toolkit" />
+        <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <div id="app">
+            <header class="app-header">
+                <div class="title-group">
+                    <h1 data-i18n="appTitle">Pilot Toolkit</h1>
+                    <p class="subtitle" data-i18n="appSubtitle">
+                        Quick rules of thumb and conversions for pilots
+                    </p>
+                </div>
+
+                <div class="top-controls">
+                    <button
+                        id="theme-toggle"
+                        class="chip"
+                        aria-label="Toggle theme"
+                    >
+                        🌙
+                    </button>
+
+                    <div
+                        class="chip chip-toggle"
+                        id="lang-toggle"
+                        aria-label="Toggle language"
+                    >
+                        <span data-lang="en" class="lang-option active"
+                            >EN</span
+                        >
+                        <span data-lang="ko" class="lang-option">KR</span>
+                    </div>
+
+                    <button
+                        id="install-btn"
+                        class="chip hidden"
+                        data-i18n="installButton"
+                    >
+                        Install
+                    </button>
+                </div>
+            </header>
+
+            <main class="content">
+                <!-- Converters section -->
+                <section>
+                    <h2 class="section-title" data-i18n="sectionConverters">
+                        Converters
+                    </h2>
+
+                    <!-- Pressure -->
+                    <div class="card">
+                        <h3 data-i18n="pressureTitle">Pressure</h3>
+                        <div class="field-row">
+                            <label>
+                                <span>hPa</span>
+                                <input
+                                    type="number"
+                                    id="press-hpa"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span>inHg</span>
+                                <input
+                                    type="number"
+                                    id="press-inhg"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Altitude -->
+                    <div class="card">
+                        <h3 data-i18n="altTitle">Altitude</h3>
+                        <div class="field-row">
+                            <label>
+                                <span data-i18n="feetLabel">Feet</span>
+                                <input
+                                    type="number"
+                                    id="alt-ft"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span data-i18n="metersLabel">Meters</span>
+                                <input
+                                    type="number"
+                                    id="alt-m"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Distance -->
+                    <div class="card">
+                        <h3 data-i18n="distTitle">Distance</h3>
+                        <div class="field-row">
+                            <label>
+                                <span>NM</span>
+                                <input
+                                    type="number"
+                                    id="dist-nm"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span>km</span>
+                                <input
+                                    type="number"
+                                    id="dist-km"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span data-i18n="statuteMiles">SM</span>
+                                <input
+                                    type="number"
+                                    id="dist-sm"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Fuel and weight -->
+                    <div class="card">
+                        <h3 data-i18n="fuelTitle">Fuel and weight</h3>
+                        <p class="hint" data-i18n="fuelHint">
+                            Uses approx avgas density 6 lb/gal (0.72 kg/L) for
+                            volume to weight.
+                        </p>
+                        <div class="field-row">
+                            <label>
+                                <span data-i18n="gallonsLabel">Gallons</span>
+                                <input
+                                    type="number"
+                                    id="fuel-gal"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span>Liters</span>
+                                <input
+                                    type="number"
+                                    id="fuel-l"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+                        <div class="field-row">
+                            <label>
+                                <span>Pounds</span>
+                                <input
+                                    type="number"
+                                    id="fuel-lb"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span>Kilograms</span>
+                                <input
+                                    type="number"
+                                    id="fuel-kg"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Temperature -->
+                    <div class="card">
+                        <h3 data-i18n="tempTitle">Temperature</h3>
+                        <div class="field-row">
+                            <label>
+                                <span>°C</span>
+                                <input
+                                    type="number"
+                                    id="temp-c"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span>°F</span>
+                                <input
+                                    type="number"
+                                    id="temp-f"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Speed -->
+                    <div class="card">
+                        <h3 data-i18n="speedTitle">Speed</h3>
+                        <div class="field-row">
+                            <label>
+                                <span>kt</span>
+                                <input
+                                    type="number"
+                                    id="speed-kt"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span>km/h</span>
+                                <input
+                                    type="number"
+                                    id="speed-kmh"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span>mph</span>
+                                <input
+                                    type="number"
+                                    id="speed-mph"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Time -->
+                    <div class="card">
+                        <h3 data-i18n="timeTitle">Time</h3>
+                        <div class="field-row">
+                            <label>
+                                <span data-i18n="timeHm">HH:MM</span>
+                                <input
+                                    type="text"
+                                    id="time-hm"
+                                    placeholder="01:30"
+                                />
+                            </label>
+                            <label>
+                                <span data-i18n="timeDec">Decimal hours</span>
+                                <input
+                                    type="number"
+                                    id="time-dec"
+                                    step="0.01"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Descent planning -->
+                <section>
+                    <h2 class="section-title" data-i18n="sectionDescent">
+                        Descent
+                    </h2>
+
+                    <div class="card">
+                        <h3 data-i18n="descentTitle">Descent planning</h3>
+                        <p class="hint" data-i18n="descentHint">
+                            Rule of thumb: VS ≈ GS × 5 for about a 3° path, ToD
+                            ≈ altitude to lose / 300 (ft to NM).
+                        </p>
+                        <div class="field-row">
+                            <label>
+                                <span data-i18n="cruiseAlt"
+                                    >Cruise altitude (ft)</span
+                                >
+                                <input
+                                    type="number"
+                                    id="descent-cruise"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span data-i18n="targetAlt"
+                                    >Target altitude (ft)</span
+                                >
+                                <input
+                                    type="number"
+                                    id="descent-target"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+                        <div class="field-row">
+                            <label>
+                                <span data-i18n="gsLabel"
+                                    >Groundspeed (kt)</span
+                                >
+                                <input
+                                    type="number"
+                                    id="descent-gs"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+
+                        <div class="results">
+                            <div>
+                                <div class="result-label" data-i18n="altToLose">
+                                    Altitude to lose
+                                </div>
+                                <div class="result-value">
+                                    <span id="descent-altlose">–</span> ft
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    class="result-label"
+                                    data-i18n="todDistance"
+                                >
+                                    ToD distance
+                                </div>
+                                <div class="result-value">
+                                    <span id="descent-tod">–</span> NM
+                                </div>
+                            </div>
+                            <div>
+                                <div class="result-label" data-i18n="reqVs">
+                                    Required VS
+                                </div>
+                                <div class="result-value">
+                                    <span id="descent-vs">–</span> fpm
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    class="result-label"
+                                    data-i18n="descentTime"
+                                >
+                                    Descent time
+                                </div>
+                                <div class="result-value">
+                                    <span id="descent-time">–</span> min
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Turns -->
+                <section>
+                    <h2 class="section-title" data-i18n="sectionTurns">
+                        Turns
+                    </h2>
+
+                    <div class="card">
+                        <h3 data-i18n="turnTitle">Standard rate turn</h3>
+                        <p class="hint" data-i18n="turnHint">
+                            Bank for standard rate: bank ≈ TAS / 10 + 5 degrees.
+                        </p>
+                        <div class="field-row">
+                            <label>
+                                <span data-i18n="tasLabel">TAS (kt)</span>
+                                <input
+                                    type="number"
+                                    id="turn-tas"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span data-i18n="turnAngleLabel"
+                                    >Turn angle (deg)</span
+                                >
+                                <input
+                                    type="number"
+                                    id="turn-angle"
+                                    inputmode="decimal"
+                                    value="180"
+                                />
+                            </label>
+                        </div>
+
+                        <div class="results">
+                            <div>
+                                <div
+                                    class="result-label"
+                                    data-i18n="stdBankAngle"
+                                >
+                                    Standard rate bank
+                                </div>
+                                <div class="result-value">
+                                    <span id="turn-bank">–</span> °
+                                </div>
+                            </div>
+                            <div>
+                                <div class="result-label" data-i18n="turnTime">
+                                    Time to turn
+                                </div>
+                                <div class="result-value">
+                                    <span id="turn-time">–</span> s
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Winds -->
+                <section>
+                    <h2 class="section-title" data-i18n="sectionWinds">
+                        Winds
+                    </h2>
+
+                    <div class="card">
+                        <h3 data-i18n="windCompTitle">
+                            Headwind and crosswind
+                        </h3>
+                        <div class="field-row">
+                            <label>
+                                <span data-i18n="runwayHeading"
+                                    >Runway heading (deg)</span
+                                >
+                                <input
+                                    type="number"
+                                    id="wind-rwy"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span data-i18n="windDir"
+                                    >Wind direction (deg)</span
+                                >
+                                <input
+                                    type="number"
+                                    id="wind-dir"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+                        <div class="field-row">
+                            <label>
+                                <span data-i18n="windSpeed"
+                                    >Wind speed (kt)</span
+                                >
+                                <input
+                                    type="number"
+                                    id="wind-speed"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+
+                        <div class="results">
+                            <div>
+                                <div
+                                    class="result-label"
+                                    data-i18n="headwindComp"
+                                >
+                                    Headwind component
+                                </div>
+                                <div class="result-value">
+                                    <span id="wind-head">–</span> kt
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    class="result-label"
+                                    data-i18n="crosswindComp"
+                                >
+                                    Crosswind component
+                                </div>
+                                <div class="result-value">
+                                    <span id="wind-cross">–</span> kt (<span
+                                        id="wind-cross-dir"
+                                        >–</span
+                                    >)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 data-i18n="gsEstimateTitle">
+                            Groundspeed estimate
+                        </h3>
+                        <p class="hint" data-i18n="gsEstimateHint">
+                            GS ≈ TAS + headwind (negative for tailwind).
+                        </p>
+                        <div class="field-row">
+                            <label>
+                                <span>TAS (kt)</span>
+                                <input
+                                    type="number"
+                                    id="gs-tas"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span data-i18n="headTail"
+                                    >Headwind (+) / tailwind (−)</span
+                                >
+                                <input
+                                    type="number"
+                                    id="gs-head"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+
+                        <div class="results">
+                            <div>
+                                <div class="result-label" data-i18n="gsLabel2">
+                                    Estimated groundspeed
+                                </div>
+                                <div class="result-value">
+                                    <span id="gs-result">–</span> kt
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Density altitude -->
+                <section>
+                    <h2 class="section-title" data-i18n="sectionDensity">
+                        Density altitude
+                    </h2>
+
+                    <div class="card">
+                        <h3 data-i18n="daTitle">Density altitude</h3>
+                        <p class="hint" data-i18n="daHint">
+                            Approximation: DA ≈ PA + 120 × (OAT − ISA temp).
+                            Pressure altitude from field elevation and
+                            altimeter.
+                        </p>
+
+                        <div class="field-row">
+                            <label>
+                                <span data-i18n="fieldElev"
+                                    >Field elevation (ft)</span
+                                >
+                                <input
+                                    type="number"
+                                    id="da-elev"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                            <label>
+                                <span data-i18n="altSetting"
+                                    >Altimeter (inHg)</span
+                                >
+                                <input
+                                    type="number"
+                                    id="da-altset"
+                                    inputmode="decimal"
+                                    placeholder="29.92"
+                                />
+                            </label>
+                        </div>
+                        <div class="field-row">
+                            <label>
+                                <span data-i18n="oatLabel"
+                                    >Outside air temp (°C)</span
+                                >
+                                <input
+                                    type="number"
+                                    id="da-oat"
+                                    inputmode="decimal"
+                                />
+                            </label>
+                        </div>
+
+                        <div class="results">
+                            <div>
+                                <div class="result-label" data-i18n="paLabel">
+                                    Pressure altitude
+                                </div>
+                                <div class="result-value">
+                                    <span id="da-pa">–</span> ft
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    class="result-label"
+                                    data-i18n="isaTempLabel"
+                                >
+                                    ISA temp at field
+                                </div>
+                                <div class="result-value">
+                                    <span id="da-isa">–</span> °C
+                                </div>
+                            </div>
+                            <div>
+                                <div class="result-label" data-i18n="daLabel">
+                                    Density altitude
+                                </div>
+                                <div class="result-value">
+                                    <span id="da-result">–</span> ft
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    class="result-label"
+                                    data-i18n="perfImpact"
+                                >
+                                    Estimated takeoff distance increase
+                                </div>
+                                <div class="result-value">
+                                    <span id="da-impact">–</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <footer class="app-footer">
+                    <p data-i18n="footerNote">
+                        For training and quick planning only. Always cross check
+                        with certified performance data and avionics.
+                    </p>
+                </footer>
+            </main>
+        </div>
+
+        <script src="app.js"></script>
+    </body>
+</html>
