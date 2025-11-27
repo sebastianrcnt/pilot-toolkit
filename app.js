@@ -2,33 +2,54 @@
 (function () {
   const root = document.documentElement;
   const savedTheme = localStorage.getItem("theme");
+  let currentTheme = "dark"; // default
+
   if (savedTheme === "light" || savedTheme === "dark") {
-    root.setAttribute("data-theme", savedTheme);
+    currentTheme = savedTheme;
   } else if (
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: light)").matches
   ) {
-    root.setAttribute("data-theme", "light");
+    currentTheme = "light";
+  }
+
+  // Apply initial theme
+  applyTheme(currentTheme);
+
+  function applyTheme(theme) {
+    const root = document.documentElement;
+    root.setAttribute("data-theme", theme);
+
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+
+    localStorage.setItem("theme", theme);
+    const themeBtn = document.getElementById("theme-toggle");
+    if (themeBtn) {
+      themeBtn.textContent = theme === "dark" ? "☀️" : "🌙";
+    }
+
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    if (themeColor) {
+      themeColor.setAttribute(
+        "content",
+        theme === "dark" ? "#0f172a" : "#ffffff"
+      );
+    }
   }
 
   window.addEventListener("DOMContentLoaded", () => {
     const themeBtn = document.getElementById("theme-toggle");
-    const currentTheme = root.getAttribute("data-theme") || "dark";
-    themeBtn.textContent = currentTheme === "dark" ? "🌙" : "☀️";
-
-    themeBtn.addEventListener("click", () => {
-      const now = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      root.setAttribute("data-theme", now);
-      localStorage.setItem("theme", now);
-      themeBtn.textContent = now === "dark" ? "🌙" : "☀️";
-      const themeColor = document.querySelector('meta[name="theme-color"]');
-      if (themeColor) {
-        themeColor.setAttribute(
-          "content",
-          now === "dark" ? "#000000" : "#ffffff",
-        );
-      }
-    });
+    if (themeBtn) {
+      themeBtn.addEventListener("click", () => {
+        const current = root.getAttribute("data-theme") || "dark";
+        const newTheme = current === "dark" ? "light" : "dark";
+        applyTheme(newTheme);
+      });
+    }
   });
 })();
 
